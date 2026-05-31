@@ -2,10 +2,17 @@ package pumpspick.hobbystore.reserve.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val Primary = Color(0xFFD4A574)
+val Accent = Color(0xFF8B6914)
+val Background = Color(0xFFF8F8F8)
+val Surface = Color(0xFFFFFFFF)
+val OnPrimary = Color(0xFFFFFFFF)
+val OnSurface = Color(0xFF1A1A1A)
+val Muted = Color(0xFF777777)
+val Border = Color(0xFFE8E8E8)
+val GradientStart = Color(0xFFD4A574)
+val GradientEnd = Color(0xFFC19660)
+val Success = Color(0xFF2D9B6D)
+val Warning = Color(0xFFF59E0B)
+val ChipBackground = Color(0xFFFDF8F2)
+val ChipContent = Color(0xFF8B5E3C)

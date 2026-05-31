@@ -1,24 +1,28 @@
 package pumpspick.hobbystore.reserve.ui.composable.screen.checkout
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import pumpspick.hobbystore.reserve.data.entity.OrderEntity
-import pumpspick.hobbystore.reserve.ui.state.DataUiState
-import pumpspick.hobbystore.reserve.ui.viewmodel.CheckoutViewModel
 import org.koin.androidx.compose.koinViewModel
+import pumpspick.hobbystore.reserve.data.entity.OrderEntity
+import pumpspick.hobbystore.reserve.ui.composable.screen.checkout.CheckoutDialog
+import pumpspick.hobbystore.reserve.ui.state.DataUiState
+import pumpspick.hobbystore.reserve.ui.theme.*
+import pumpspick.hobbystore.reserve.ui.viewmodel.CheckoutViewModel
 
 @Composable
 fun CheckoutScreen(
@@ -26,95 +30,94 @@ fun CheckoutScreen(
     viewModel: CheckoutViewModel = koinViewModel(),
     onNavigateToOrdersScreen: () -> Unit,
 ) {
-    val focusManager = LocalFocusManager.current
     val orderState by viewModel.orderState.collectAsStateWithLifecycle()
-    val emailInvalidState by viewModel.emailInvalidState.collectAsStateWithLifecycle()
+    val emailInvalid by viewModel.emailInvalidState.collectAsStateWithLifecycle()
 
-    val isButtonEnabled by remember {
-        derivedStateOf {
-            viewModel.customerFirstName.isNotEmpty() &&
-                    viewModel.customerLastName.isNotEmpty() &&
-                    viewModel.customerEmail.isNotEmpty()
+    val isFormComplete = viewModel.customerFirstName.isNotBlank() &&
+            viewModel.customerLastName.isNotBlank() &&
+            viewModel.customerEmail.isNotBlank()
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Checkout", fontFamily = HeadingFamily, fontWeight = FontWeight.Bold, color = OnSurface) },
+                navigationIcon = {
+                    IconButton(onClick = onNavigateToOrdersScreen) {
+                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back", tint = OnSurface)
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Surface)
+            )
+        },
+        containerColor = Background
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text("Contact Details", fontFamily = HeadingFamily, fontWeight = FontWeight.Bold, fontSize = 16.sp, color = OnSurface)
+
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = viewModel.customerFirstName,
+                    onValueChange = { viewModel.updateCustomerFirstName(it) },
+                    label = { Text("First Name", fontFamily = BodyFamily) },
+                    modifier = Modifier.weight(1f),
+                    singleLine = true,
+                    shape = RoundedCornerShape(8.dp)
+                )
+                OutlinedTextField(
+                    value = viewModel.customerLastName,
+                    onValueChange = { viewModel.updateCustomerLastName(it) },
+                    label = { Text("Last Name", fontFamily = BodyFamily) },
+                    modifier = Modifier.weight(1f),
+                    singleLine = true,
+                    shape = RoundedCornerShape(8.dp)
+                )
+            }
+
+            OutlinedTextField(
+                value = viewModel.customerEmail,
+                onValueChange = { viewModel.updateCustomerEmail(it) },
+                label = { Text("Email Address", fontFamily = BodyFamily) },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                isError = emailInvalid,
+                supportingText = if (emailInvalid) {{ Text("Please enter a valid email", color = MaterialTheme.colorScheme.error, fontFamily = BodyFamily) }} else null,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                shape = RoundedCornerShape(8.dp)
+            )
+
+            Button(
+                onClick = { viewModel.placeOrder() },
+                enabled = isFormComplete,
+                modifier = Modifier.fillMaxWidth().height(52.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = OnSurface,
+                    disabledContainerColor = Border
+                ),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text(
+                    "Place Order",
+                    fontFamily = HeadingFamily,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp,
+                    color = if (isFormComplete) Surface else Muted
+                )
+            }
         }
     }
 
     if (orderState is DataUiState.Populated) {
+        val order = (orderState as DataUiState.Populated<OrderEntity>).data
         CheckoutDialog(
-            order = (orderState as DataUiState.Populated<OrderEntity>).data,
-            onConfirm = onNavigateToOrdersScreen
+            orderNumber = order.orderNumber,
+            onDismiss = onNavigateToOrdersScreen
         )
     }
-
-    CheckoutContent(
-        customerFirstName = viewModel.customerFirstName,
-        customerLastName = viewModel.customerLastName,
-        customerEmail = viewModel.customerEmail,
-        isEmailInvalid = emailInvalidState,
-        modifier = modifier,
-        focusManager = focusManager,
-        isButtonEnabled = isButtonEnabled,
-        onFirstNameChanged = viewModel::updateCustomerFirstName,
-        onLastNameChanged = viewModel::updateCustomerLastName,
-        onEmailChanged = viewModel::updateCustomerEmail,
-        onPlaceOrderButtonClick = viewModel::placeOrder
-    )
-}
-
-@Composable
-private fun CheckoutContent(
-    customerFirstName: String,
-    customerLastName: String,
-    customerEmail: String,
-    isEmailInvalid: Boolean,
-    modifier: Modifier = Modifier,
-    focusManager: FocusManager,
-    isButtonEnabled: Boolean,
-    onFirstNameChanged: (String) -> Unit,
-    onLastNameChanged: (String) -> Unit,
-    onEmailChanged: (String) -> Unit,
-    onPlaceOrderButtonClick: () -> Unit,
-) {
-    Column(modifier = modifier) {
-
-    }
-}
-
-@Composable
-fun CheckoutTextField(
-    input: String,
-    onInputChange: (String) -> Unit,
-    labelText: String,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    isError: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default,
-) {
-    OutlinedTextField(
-        value = input,
-        onValueChange = onInputChange,
-        modifier = modifier,
-        enabled = enabled,
-        label = {
-            Text(
-                text = labelText,
-                style = MaterialTheme.typography.titleSmall,
-            )
-        },
-        isError = isError,
-        keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions,
-        singleLine = true,
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.surface,
-            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-            focusedTextColor = MaterialTheme.colorScheme.onSurface,
-            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
-            unfocusedBorderColor = MaterialTheme.colorScheme.outline,
-            focusedLabelColor = MaterialTheme.colorScheme.primary,
-            unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            cursorColor = MaterialTheme.colorScheme.primary
-        ),
-    )
 }
