@@ -1,0 +1,76 @@
+<resources>
+    <string name="app_name">Pumps Pick</string>
+
+    <!-- shared -->
+    <string name="price">£%1$.2f</string>
+
+    <!-- top bar titles -->
+    <string name="top_bar_home_title">Home/App Title</string>
+    <string name="top_bar_cart_title">Cart</string>
+    <string name="top_bar_checkout_title">Checkout</string>
+    <string name="top_bar_orders_title">Orders</string>
+    <string name="top_bar_settings_title">Settings</string>
+    <string name="top_bar_product_details_title">Details</string>
+
+    <!-- bottom bar navigation item titles -->
+    <string name="bottom_bar_nav_item_home_title">Home</string>
+    <string name="bottom_bar_nav_item_cart_title">Cart</string>
+    <string name="bottom_bar_nav_item_orders_title">Orders</string>
+    <string name="bottom_bar_nav_item_settings_title">Settings</string>
+
+    <!-- onboarding screen -->
+    <string name="page_1_title">Strategic Planning</string>
+    <string name="page_2_title">Operational Excellence</string>
+    <string name="page_3_title">Change Management</string>
+    <string name="page_1_description">Comprehensive strategic analysis and planning that aligns your business objectives with market opportunities and organizational capabilities.</string>
+    <string name="page_2_description">Process optimization and operational improvement strategies that enhance efficiency, reduce costs, and drive sustainable performance.</string>
+    <string name="page_3_description">Expert guidance through organizational transformation</string>
+    <string name="next_button_title">Next</string>
+    <string name="start_button_title">Start</string>
+    <string name="skip_button_title">Skip</string>
+
+    <!-- home/products screen   -->
+    <string name="products_state_empty_primary_text">No products available</string>
+
+    <!-- product details screen   -->
+    <string name="product_details_state_empty_primary_text">No information available for this product</string>
+    <string name="product_image_description">Product image</string>
+    <string name="button_add_to_cart_label">Add to Cart</string>
+
+    <!-- cart screen -->
+    <string name="cart_state_empty_primary_text">Nothing in your cart yet</string>
+    <string name="button_place_order_label">Place Order • £%1$.2f</string>
+    <string name="increase_quantity_icon_description">Increase quantity</string>
+    <string name="decrease_quantity_icon_description">Decrease quantity</string>
+    <string name="delete_item_icon_description">Delete item</string>
+
+    <!-- orders screen -->
+    <string name="orders_state_empty_primary_text">You have no orders yet</string>
+    <string name="order_number">Order #%1$s</string>
+    <string name="order_customer">Customer: %1$s %2$s</string>
+
+    <!-- checkout screen -->
+    <string name="checkout_text_field_first_name">First Name</string>
+    <string name="checkout_text_field_last_name">Last Name</string>
+    <string name="checkout_text_field_email">Email</string>
+    <string name="button_confirm_order_label">Confirm Order</string>
+
+    <!-- checkout dialog -->
+    <string name="checkout_dialog_title">Order Confirmed</string>
+    <string name="checkout_dialog_order_number">Order number: #%1$s</string>
+    <string name="checkout_dialog_processing_message">Your order will be processed within 24 hours.</string>
+
+    <!-- settings screen -->
+    <string name="settings_screen_company_label">Company</string>
+    <string name="settings_screen_version_label">Version</string>
+    <string name="settings_screen_customer_support_label">Customer Support</string>
+    <string name="company_name">Company Name</string>
+    <string name="app_version">1.0.0</string>
+    <string name="customer_support_link">https://website.org/</string>
+
+    <!-- clear cart dialog -->
+    <string name="clear_cart_dialog_title">Clear cart?</string>
+    <string name="clear_card_dialog_text">Are you sure you want to remove all items from your cart?</string>
+    <string name="button_confirm_clear_cart_title">Confirm</string>
+    <string name="button_cancel_clear_cart_title">Cancel</string>
+</resources>
