@@ -38,17 +38,7 @@ fun CheckoutScreen(
             viewModel.customerEmail.isNotBlank()
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Checkout", fontFamily = HeadingFamily, fontWeight = FontWeight.Bold, color = OnSurface) },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateToOrdersScreen) {
-                        Icon(Icons.Filled.ArrowBack, contentDescription = "Back", tint = OnSurface)
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Surface)
-            )
-        },
+
         containerColor = Background
     ) { padding ->
         Column(

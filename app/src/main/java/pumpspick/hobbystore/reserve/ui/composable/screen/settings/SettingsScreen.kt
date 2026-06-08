@@ -25,12 +25,7 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Settings", fontFamily = HeadingFamily, fontWeight = FontWeight.Bold, color = OnSurface) },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Surface)
-            )
-        },
+
         containerColor = Background
     ) { padding ->
         Column(
@@ -49,19 +44,6 @@ fun SettingsScreen(modifier: Modifier = Modifier) {
                     SettingsRow(label = "Company", value = "PUMPS VENTURES LTD")
                     Divider(color = Border, thickness = 0.5.dp)
                     SettingsRow(label = "Version", value = "1.0.0")
-                }
-            }
-
-            Text("Legal", fontFamily = HeadingFamily, fontWeight = FontWeight.Bold, fontSize = 12.sp, color = Muted, letterSpacing = androidx.compose.ui.unit.TextUnit(1f, androidx.compose.ui.unit.TextUnitType.Sp))
-            Card(shape = RoundedCornerShape(12.dp), colors = CardDefaults.cardColors(containerColor = Surface), elevation = CardDefaults.cardElevation(1.dp)) {
-                Column {
-                    SettingsLinkRow(label = "Privacy Policy") {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://pumps-ventures.click/privacy")))
-                    }
-                    Divider(color = Border, thickness = 0.5.dp)
-                    SettingsLinkRow(label = "Terms of Service") {
-                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://pumps-ventures.click/terms")))
-                    }
                 }
             }
 

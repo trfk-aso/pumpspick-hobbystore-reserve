@@ -35,12 +35,12 @@ private val slides = listOf(
         description = "Explore our curated collection of hobby kits, artisan gifts, games, and lifestyle goods — all chosen for their quality and originality."
     ),
     OnboardingSlide(
-        imageUrl = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800",
+        imageUrl = "https://images.unsplash.com/photo-1513885535751-8b9238bd345a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z2lmdHN8ZW58MHx8MHx8fDA%3D",
         title = "Gifts They'll Love",
         description = "From personalised keepsakes to creative DIY kits, Pumps Pick makes it easy to find meaningful gifts for every occasion and every person."
     ),
     OnboardingSlide(
-        imageUrl = "https://images.unsplash.com/photo-1490750967868-88df5691cc85?w=800",
+        imageUrl = "https://images.unsplash.com/photo-1598305762558-328f599df683?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8U2hvcCUyMFdpdGglMjBFYXNlfGVufDB8fDB8fHww",
         title = "Shop With Ease",
         description = "Browse by category, save favourites, and reserve your order in seconds. Collect within 24 hours from our fulfilment centre."
     ),
@@ -130,7 +130,7 @@ fun OnboardingScreen(
                     Button(
                         onClick = {
                             scope.launch {
-                                viewModel.setOnboardingCompleted()
+                                viewModel.setOnboarded()
                                 onFinish()
                             }
                         },

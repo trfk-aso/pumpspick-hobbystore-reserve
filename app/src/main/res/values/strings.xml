@@ -13,4 +13,7 @@
     <string name="home">Home</string>
     <string name="company_name">PUMPS VENTURES LTD</string>
     <string name="app_version">1.0.0</string>
+    <string name="pumps_pick">Pumps Pick</string>
+    <string name="details">Details</string>
+    <string name="checkout">Checkout</string>
 </resources>

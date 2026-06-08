@@ -77,17 +77,6 @@ fun ProductDetailsScreen(
                         modifier = Modifier.fillMaxSize()
                     )
                 }
-                // Back button
-                IconButton(
-                    onClick = onBack,
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .padding(top = 44.dp, start = 8.dp)
-                        .clip(CircleShape)
-                        .background(Color.Black.copy(alpha = 0.4f))
-                ) {
-                    Icon(Icons.Filled.ArrowBack, contentDescription = "Back", tint = Color.White)
-                }
                 // Dots
                 Row(
                     modifier = Modifier
@@ -165,6 +154,7 @@ fun ProductDetailsScreen(
                 Button(
                     onClick = {
                         viewModel.addProductToCart()
+                        onBack()
                         cartAdded = true
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = OnSurface),

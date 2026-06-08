@@ -27,7 +27,7 @@ fun AppNavHost(
     ) {
         composable<NavRoute.Splash> {
             SplashScreen(
-                onNavigateToHomeScreen = {
+                onNavigateToHome = {
                     navController.navigate(route = NavRoute.Home) {
                         popUpTo(navController.graph.startDestinationId) {
                             inclusive = true
@@ -48,7 +48,7 @@ fun AppNavHost(
 
         composable<NavRoute.Onboarding> {
             OnboardingScreen(
-                onNavigateToHomeScreen = {
+                onFinish = {
                     navController.navigate(NavRoute.Home) {
                         popUpTo(NavRoute.Onboarding) {
                             inclusive = true
@@ -61,7 +61,7 @@ fun AppNavHost(
 
         composable<NavRoute.Home> {
             HomeScreen(
-                onNavigateToProductDetails = { id: Int ->
+                onProductClick = { id: Int ->
                     navController.navigate(
                         route = NavRoute.ProductDetails(id = id)
                     )
@@ -72,6 +72,7 @@ fun AppNavHost(
         composable<NavRoute.ProductDetails> { backStackEntry ->
             val productDetails: NavRoute.ProductDetails = backStackEntry.toRoute()
             ProductDetailsScreen(
+                onBack = {navController.popBackStack()},
                 productId = productDetails.id,
             )
         }

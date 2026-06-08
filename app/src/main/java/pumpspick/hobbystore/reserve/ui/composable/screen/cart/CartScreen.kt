@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,12 +39,7 @@ fun CartScreen(
     val totalPrice by viewModel.totalPrice.collectAsStateWithLifecycle()
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("My Cart", fontFamily = HeadingFamily, fontWeight = FontWeight.Bold, color = OnSurface) },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Surface)
-            )
-        },
+
         containerColor = Background
     ) { padding ->
         when (val state = cartItemsState) {
@@ -140,7 +136,9 @@ private fun CartItemCard(
                 IconButton(onClick = onMinus, modifier = Modifier.size(32.dp)) {
                     Icon(Icons.Filled.Remove, contentDescription = "Decrease", modifier = Modifier.size(16.dp), tint = OnSurface)
                 }
-                Text("${item.quantity}", fontFamily = BodyFamily, fontWeight = FontWeight.Bold, fontSize = 15.sp, color = OnSurface, modifier = Modifier.width(24.dp))
+                Text("${item.quantity}", fontFamily = BodyFamily,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold, fontSize = 15.sp, color = OnSurface, modifier = Modifier.width(24.dp))
                 IconButton(onClick = onPlus, modifier = Modifier.size(32.dp)) {
                     Icon(Icons.Filled.Add, contentDescription = "Increase", modifier = Modifier.size(16.dp), tint = OnSurface)
                 }

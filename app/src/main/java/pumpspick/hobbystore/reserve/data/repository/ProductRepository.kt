@@ -20,7 +20,7 @@ class ProductRepository {
             title = "DIY Macramé Kit",
             description = "Complete starter kit for macramé enthusiasts. Includes natural cotton rope, wooden dowels, a step-by-step instruction booklet, and enough material to make three wall hangings.",
             price = 28.50,
-            imageUrl = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800",
+            imageUrl = "https://images.unsplash.com/photo-1631945788919-24e76faead25?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8TWFjcmFtJUMzJUE5JTIwS2l0fGVufDB8fDB8fHww",
             category = ProductCategory.HOBBIES
         ),
         Product(
@@ -28,7 +28,7 @@ class ProductRepository {
             title = "Premium Scented Candle Collection",
             description = "Set of four hand-poured soy candles in warm seasonal fragrances: amber vanilla, cedar pine, rose sandalwood, and ocean breeze. Burn time 40 hours each.",
             price = 42.00,
-            imageUrl = "https://images.unsplash.com/photo-1602028915047-37269d1a73f7?w=800",
+            imageUrl = "https://images.unsplash.com/photo-1612293905607-b003de9e54fb?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8U2NlbnRlZCUyMENhbmRsZXxlbnwwfHwwfHx8MA%3D%3D",
             category = ProductCategory.HOME_LIFESTYLE
         ),
         Product(
@@ -36,7 +36,7 @@ class ProductRepository {
             title = "1000-Piece Cityscape Puzzle",
             description = "Beautifully illustrated panoramic cityscape jigsaw puzzle featuring London's iconic skyline at dusk. High-quality thick pieces with a glare-free finish.",
             price = 22.99,
-            imageUrl = "https://images.unsplash.com/photo-1561089489-f13d5e730d72?w=800",
+            imageUrl = "https://images.unsplash.com/photo-1715702803426-39aa0d4c39a9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8MTAwMC1QaWVjZSUyMENpdHlzY2FwZSUyMFB1enpsZXxlbnwwfHwwfHx8MA%3D%3D",
             category = ProductCategory.GAMES_PUZZLES
         ),
         Product(
@@ -52,7 +52,7 @@ class ProductRepository {
             title = "Miniature Terrarium Kit",
             description = "Glass dome terrarium kit with succulents, decorative stones, activated charcoal, and planting soil. A living gift that requires minimal maintenance and lasts for years.",
             price = 31.50,
-            imageUrl = "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=800",
+            imageUrl = "https://images.unsplash.com/photo-1762180581579-2f63d3d06a0d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8TWluaWF0dXJlJTIwVGVycmFyaXVtfGVufDB8fDB8fHww",
             category = ProductCategory.HOME_LIFESTYLE
         ),
         Product(
@@ -60,7 +60,7 @@ class ProductRepository {
             title = "Vintage Map Art Print Set",
             description = "Set of three A3 framing-ready vintage map prints of classic European cities. Printed on 200gsm matte art paper with warm sepia tones.",
             price = 27.00,
-            imageUrl = "https://images.unsplash.com/photo-1524813686514-a57563d77965?w=800",
+            imageUrl = "https://images.unsplash.com/photo-1723306009175-dca7d26f3350?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fFZpbnRhZ2UlMjBNYXAlMjBBcnQlMjBQcmludHxlbnwwfHwwfHx8MA%3D%3D",
             category = ProductCategory.GIFTS_SOUVENIRS
         ),
         Product(
@@ -84,7 +84,7 @@ class ProductRepository {
             title = "Botanical Pressed Flower Kit",
             description = "Complete flower pressing kit with a wooden press, blotting paper, mounting cards, and a guide to 50 common wild flowers. A timeless hobby for all ages.",
             price = 24.00,
-            imageUrl = "https://images.unsplash.com/photo-1490750967868-88df5691cc85?w=800",
+            imageUrl = "https://images.unsplash.com/photo-1750268222879-80c8f47d93a8?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fEJvdGFuaWNhbCUyMFByZXNzZWQlMjBGbG93ZXJ8ZW58MHx8MHx8fDA%3D",
             category = ProductCategory.HOBBIES
         ),
     )

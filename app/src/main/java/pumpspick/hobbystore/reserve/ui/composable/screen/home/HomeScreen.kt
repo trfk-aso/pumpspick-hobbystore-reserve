@@ -36,7 +36,7 @@ import pumpspick.hobbystore.reserve.ui.state.DataUiState
 import pumpspick.hobbystore.reserve.ui.theme.*
 import pumpspick.hobbystore.reserve.ui.viewmodel.ProductViewModel
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     onProductClick: (Int) -> Unit,
@@ -44,6 +44,7 @@ fun HomeScreen(
 ) {
     val productsState by viewModel.productsState.collectAsStateWithLifecycle()
     var selectedCategory by remember { mutableStateOf<ProductCategory?>(null) }
+    var searchQuery by remember { mutableStateOf("") }
 
     val products = when (val s = productsState) {
         is DataUiState.Populated -> s.data
@@ -51,7 +52,12 @@ fun HomeScreen(
     }
 
     val featured = products.take(4)
-    val filtered = if (selectedCategory == null) products else products.filter { it.category == selectedCategory }
+
+    val filtered = products.filter { product ->
+        val matchesCategory = selectedCategory == null || product.category == selectedCategory
+        val matchesSearch = searchQuery.isBlank() || product.title.contains(searchQuery, ignoreCase = true)
+        matchesCategory && matchesSearch
+    }
 
     val pagerState = rememberPagerState(pageCount = { if (featured.isEmpty()) 1 else featured.size })
     LaunchedEffect(featured.size) {
@@ -65,33 +71,37 @@ fun HomeScreen(
     }
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        "Pumps Pick",
-                        fontFamily = HeadingFamily,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 22.sp,
-                        color = OnSurface
-                    )
-                },
-                actions = {
-                    IconButton(onClick = { selectedCategory = null }) {
-                        Icon(Icons.Filled.Search, contentDescription = "Search", tint = OnSurface)
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Surface)
-            )
-        },
         containerColor = Background
     ) { padding ->
         LazyColumn(
             modifier = Modifier.fillMaxSize().padding(padding),
-            contentPadding = PaddingValues(bottom = 16.dp)
+            contentPadding = PaddingValues(top = 16.dp, bottom = 16.dp)
         ) {
-            // Hero card — first featured product
-            if (featured.isNotEmpty()) {
+            item {
+                OutlinedTextField(
+                    value = searchQuery,
+                    onValueChange = { searchQuery = it },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    placeholder = {
+                        Text("Search hobbies...", color = OnSurface.copy(alpha = 0.5f), fontFamily = BodyFamily)
+                    },
+                    leadingIcon = {
+                        Icon(Icons.Filled.Search, contentDescription = "Search", tint = Primary)
+                    },
+                    singleLine = true,
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = Surface,
+                        unfocusedContainerColor = Surface,
+                        focusedBorderColor = Primary,
+                        unfocusedBorderColor = Border
+                    )
+                )
+            }
+
+            if (searchQuery.isBlank() && featured.isNotEmpty()) {
                 item {
                     Box(
                         modifier = Modifier
@@ -99,38 +109,46 @@ fun HomeScreen(
                             .height(220.dp)
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                             .clip(RoundedCornerShape(12.dp))
-                            .clickable { onProductClick(featured[0].id) }
                     ) {
-                        AsyncImage(
-                            model = featured[0].imageUrl,
-                            contentDescription = featured[0].title,
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(Brush.verticalGradient(listOf(Color.Transparent, Color(0xBB000000))))
-                        )
-                        Column(
-                            modifier = Modifier
-                                .align(Alignment.BottomStart)
-                                .padding(16.dp)
-                        ) {
-                            Text(
-                                text = featured[0].title,
-                                fontFamily = HeadingFamily,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 22.sp,
-                                color = Color.White
-                            )
-                            Text(
-                                text = "£${String.format("%.2f", featured[0].price)}",
-                                fontFamily = BodyFamily,
-                                fontSize = 16.sp,
-                                color = Primary
-                            )
+                        HorizontalPager(state = pagerState) { page ->
+                            val product = featured[page]
+                            Box(modifier = Modifier.fillMaxSize().clickable { onProductClick(product.id) }) {
+                                AsyncImage(
+                                    model = product.imageUrl,
+                                    contentDescription = product.title,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .background(Brush.verticalGradient(listOf(Color.Transparent, Color(0xBB000000))))
+                                )
+                                Column(
+                                    modifier = Modifier
+                                        .align(Alignment.BottomStart)
+                                        .padding(16.dp)
+                                        .padding(bottom = 12.dp)
+                                ) {
+                                    Text(
+                                        text = product.title,
+                                        fontFamily = HeadingFamily,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 22.sp,
+                                        color = Color.White,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                    Text(
+                                        text = "£${String.format("%.2f", product.price)}",
+                                        fontFamily = BodyFamily,
+                                        fontSize = 16.sp,
+                                        color = Primary
+                                    )
+                                }
+                            }
                         }
+
                         // Pager dots
                         Row(
                             modifier = Modifier
@@ -151,12 +169,30 @@ fun HomeScreen(
                 }
             }
 
-            // Category chips — pill-shaped with border, no fill
+            // Category chips
             item {
                 LazyRow(
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
+                    item {
+                        val isSelected = selectedCategory == null
+                        Box(
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .border(1.dp, if (isSelected) Primary else Border, CircleShape)
+                                .background(if (isSelected) Primary.copy(alpha = 0.1f) else Color.Transparent)
+                                .clickable { selectedCategory = null }
+                                .padding(horizontal = 16.dp, vertical = 6.dp)
+                        ) {
+                            Text(
+                                text = "All",
+                                fontFamily = BodyFamily,
+                                fontSize = 13.sp,
+                                color = if (isSelected) Primary else OnSurface
+                            )
+                        }
+                    }
                     items(ProductCategory.values().toList()) { cat ->
                         val isSelected = selectedCategory == cat
                         Box(
@@ -178,29 +214,45 @@ fun HomeScreen(
                 }
             }
 
-            // Staggered 2-col grid
-            val rows = filtered.chunked(2)
-            items(rows) { rowProducts ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    rowProducts.forEachIndexed { idx, product ->
-                        val cardHeight = if ((rows.indexOf(rowProducts) + idx) % 2 == 0) 240.dp else 180.dp
-                        ProductCard(
-                            product = product,
-                            cardHeight = cardHeight,
-                            onClick = { onProductClick(product.id) },
-                            modifier = Modifier.weight(1f)
+            if (filtered.isEmpty()) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(32.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No products found",
+                            color = OnSurface.copy(alpha = 0.5f),
+                            fontFamily = BodyFamily
                         )
                     }
-                    if (rowProducts.size == 1) {
-                        Spacer(modifier = Modifier.weight(1f))
-                    }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
+            } else {
+                // Uniform grid
+                val rows = filtered.chunked(2)
+                items(rows) { rowProducts ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        rowProducts.forEach { product ->
+                            ProductCard(
+                                product = product,
+                                cardHeight = 240.dp,
+                                onClick = { onProductClick(product.id) },
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                        if (rowProducts.size == 1) {
+                            Spacer(modifier = Modifier.weight(1f))
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
             }
         }
     }
@@ -221,25 +273,32 @@ private fun ProductCard(
         colors = CardDefaults.cardColors(containerColor = Surface),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
-        Column {
+        Column(modifier = Modifier.fillMaxSize()) {
             AsyncImage(
                 model = product.imageUrl,
                 contentDescription = product.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
+                    .height(130.dp)
             )
-            Column(modifier = Modifier.padding(10.dp)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp)
+            ) {
                 Text(
                     text = product.title,
                     fontFamily = BodyFamily,
                     fontSize = 13.sp,
                     color = OnSurface,
                     fontWeight = FontWeight.Medium,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
+
+                Spacer(Modifier.weight(1f))
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,

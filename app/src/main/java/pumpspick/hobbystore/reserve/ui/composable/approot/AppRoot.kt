@@ -31,22 +31,22 @@ import kotlin.reflect.KClass
 
 private val navigationItems: List<BottomNavItem> = listOf(
     BottomNavItem(
-        titleRes = R.string.bottom_bar_nav_item_home_title,
+        titleRes = R.string.home,
         icon = Icons.Default.Home,
         route = NavRoute.Home,
     ),
     BottomNavItem(
-        titleRes = R.string.bottom_bar_nav_item_cart_title,
+        titleRes = R.string.cart,
         icon = Icons.Default.ShoppingCart,
         route = NavRoute.Cart,
     ),
     BottomNavItem(
-        titleRes = R.string.bottom_bar_nav_item_orders_title,
+        titleRes = R.string.orders,
         icon = Icons.Default.CalendarToday,
         route = NavRoute.Orders,
     ),
     BottomNavItem(
-        titleRes = R.string.bottom_bar_nav_item_settings_title,
+        titleRes = R.string.settings,
         icon = Icons.Default.Settings,
         route = NavRoute.Settings,
     ),
@@ -97,7 +97,9 @@ fun AppRoot(
         isCartNotEmpty = cartPopulatedState is DataUiState.Populated,
         shouldShowTopBar = shouldShowTopBar,
         shouldShowBottomBar = shouldShowBottomBar,
-        onClearCartIconClick = { shouldShowClearCartDialog = true },
+        onClearCartIconClick = {
+            viewModel.clearCart()
+            shouldShowClearCartDialog = true },
         onNavigateToRoute = onNavigateToRoute,
         onNavigateBack = { navController.popBackStack() }
     )

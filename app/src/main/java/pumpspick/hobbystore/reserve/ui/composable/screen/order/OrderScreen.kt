@@ -29,12 +29,7 @@ fun OrdersScreen(
     val ordersState by viewModel.ordersState.collectAsStateWithLifecycle()
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("My Orders", fontFamily = HeadingFamily, fontWeight = FontWeight.Bold, color = OnSurface) },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Surface)
-            )
-        },
+
         containerColor = Background
     ) { padding ->
         when (val state = ordersState) {
