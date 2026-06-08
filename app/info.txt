@@ -1,0 +1,5 @@
+vApp name: Pumps Pick
+Bundle: pumpspick.hobbystore.reserve
+
+Keystore password: LpV7JrN3xF964QsT
+Key password: LpV7JrN3xF964QsT
